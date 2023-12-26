@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		
+		<title>Student Management</title>
+		
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+		 integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+		 crossorigin="anonymous">
+		
+	</head>
+	
+	<body style="background-color:lightblue;">
+		
+		<!--navbar started-->
+		
+		
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">Student Management</a>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/students}">Updated Records</a>
+      </li>
+      
+    </ul>
+  </div>
+</nav>
+		<!--navbar-->
+		
+		<div class="container">
+			<div class="row">
+				<h1 style="padding-left: 15px;">List of Students</h1>
+			</div>
+			
+			<div>
+				
+			</div>
+			
+			
+			<!--Add students-->
+			<div class="row">
+				<div class="col-lg-3">
+					<a th:href="@{/students/new}" class="btn btn-primary btn-sm mb-3">Add Student</a>					
+				</div>
+				
+			</div>
+			
+			<!--Popup message-->
+			
+<!--Now print if successMessage is true-->			
+<div style="margin-right: 920px;" id="success-message" th:if="${session.successMessage}" class="alert alert-success" role="alert">
+    <p th:text="${session.successMessage}"></p>
+</div>
+
+
+<!-- to check if session.successMessage are true or not -->
+<div id="success-message">
+		
+	<div th:if="${session.successMessage}">
+    	<input type="hidden" id="showPopup" th:value="true" />
+	</div>
+
+</div>
+
+			<!--Popup message-->
+
+		
+			<table class="table table-striped table-bordered">
+				
+				<thead class="table-dark">
+					
+					<tr>
+						<th>Student First Name</th>
+						<th>Student Last Name</th>
+						<th>Student Email</th>
+						<th>Student College Name</th>
+						<th>Action</th>
+						
+					</tr>
+					
+				</thead>
+				
+				
+				<tbody>
+					<tr th:each = "student: ${students}">
+						<!--it works as each/for loop we will get data from list of students from controller-->
+						<td th:text="${student.firstName}"></td>
+						<td th:text="${student.lastName}"></td>
+						<td th:text="${student.email}"></td>
+						<td th:text="${student.clgName}"></td>
+						<td>
+							
+							<!--Update button-->
+							<a th:href="@{/students/edit/{id}(id=${student.id})}" 
+							class="btn btn-primary">Update
+							</a>		
+							
+							<!--delete -->
+							<a th:href="@{/students/{id}(id=${student.id})}" 
+							class="btn btn-danger">Delete
+							</a>		
+							
+						</td>
+							
+					</tr>
+					
+				</tbody>
+				
+				
+				
+			</table>
+			
+			<!--<script src="@{/js/script.js}"> </script>-->
+			
+		</div>
+		
+	<!--<script>
+    	document.addEventListener("DOMContentLoaded", function() {
+        	// Function to hide the success message after 5 seconds
+        	function hideSuccessMessage() {
+            	var successMessageElement = document.getElementById('success-message');
+            	if (successMessageElement) {
+                	successMessageElement.style.display = 'none';
+            	}
+        	}
+
+        	// Call the hideSuccessMessage function after 5 seconds (5000 milliseconds)
+        	setTimeout(hideSuccessMessage, 2000);
+    	});
+	</script>-->
+	
+	
+	
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Function to hide the success message after 5 seconds
+        function hideSuccessMessage() {
+            var successMessageElement = document.getElementById('success-message');
+            if (successMessageElement) {
+                successMessageElement.style.display = 'none';
+                // Reset the successMessage in the session
+                fetch('/resetSuccessMessage', {
+                    method: 'POST'
+                });
+            }
+        }
+
+        // Call the hideSuccessMessage function after 5 seconds (5000 milliseconds)
+        setTimeout(hideSuccessMessage, 2000);
+
+        // Check if the showPopup flag is true and display the popup accordingly
+        var showPopup = document.getElementById('showPopup').value;
+        if (showPopup === "true") {
+            var successMessageElement = document.getElementById('success-message');
+            successMessageElement.style.display = 'block';
+        }
+    });
+</script>
+
+
+		
+	</body>
+	
+</html>
